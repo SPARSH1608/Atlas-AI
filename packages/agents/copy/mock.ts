@@ -5,7 +5,9 @@ export const MockCopyAgent: CopyAgent = {
         return {
             data: {
                 original_text: input.text,
-                rewritten_text: `[AI Rewrite] ${input.text}`,
+                rewritten_text: input.userIntent
+                    ? `[${input.userIntent}] ${input.text}`
+                    : `[AI Rewrite] ${input.text}`,
                 tone: "mock",
                 reasoning: "Mock rewrite for UX testing",
             },

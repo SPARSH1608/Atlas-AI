@@ -5,6 +5,7 @@ export interface CopyAgentInput {
     text: string;
     role: "headline" | "body" | "cta";
     brandDNA: any;
+    userIntent?: string
 }
 
 export type CopyAgent = Agent<

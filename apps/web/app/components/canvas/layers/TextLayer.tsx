@@ -1,6 +1,7 @@
 "use client";
 
 import { CanvasLayer } from "@repo/schemas";
+import { useState } from "react";
 
 export function TextLayer({
     layer,
@@ -12,7 +13,7 @@ export function TextLayer({
     if (layer.type !== "text") return null;
 
     const { position, style, content, constraints } = layer;
-
+    const [intent, setIntent] = useState<string>("");
     function handleBlur(e: React.FocusEvent<HTMLDivElement>) {
         const newText = e.currentTarget.innerText;
 
@@ -64,7 +65,8 @@ export function TextLayer({
                         body: JSON.stringify({
                             text: content.text,
                             role: layer.role,
-                            brandDNA: window.__BRAND_DNA__, // temp
+                            brandDNA: window.__BRAND_DNA__,
+                            userIntent: intent,
                         }),
                     });
 
@@ -80,7 +82,12 @@ export function TextLayer({
             >
                 Rewrite
             </button>
-
+            <input
+                placeholder="Optional: e.g. more confident, shorter"
+                value={intent}
+                onChange={(e) => setIntent(e.target.value)}
+                style={{ fontSize: 10, width: "100%" }}
+            />
 
             {content.text}
         </div>
