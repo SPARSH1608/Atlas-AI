@@ -6,7 +6,7 @@ import { MockDesignerAgent, MockBrandIntelligenceAgent, MockProductResearchAgent
 // real
 import { DesignerAgentImpl, BrandIntelligenceAgentImpl, ProductResearchAgentImpl } from "@repo/agents"
 import { CopyAgentImpl, MockCopyAgent, CopyAgent } from "@repo/agents"
-
+import { VisualAgentImpl, MockVisualAgent, VisualAgent } from "@repo/agents"
 const USE_MOCKS = process.env.USE_MOCK_AGENTS === "true";
 console.log("Using mock agents:", USE_MOCKS);
 
@@ -22,6 +22,11 @@ export function getCopyAgent(): CopyAgent {
         : CopyAgentImpl;
 }
 
+export function getVisualAgent(): VisualAgent {
+    return USE_MOCKS
+        ? MockVisualAgent
+        : VisualAgentImpl;
+}
 export function getBrandIntelligenceAgent(): BrandIntelligenceAgent {
     return USE_MOCKS
         ? MockBrandIntelligenceAgent

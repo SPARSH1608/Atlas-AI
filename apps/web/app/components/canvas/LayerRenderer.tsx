@@ -22,7 +22,7 @@ export function LayerRenderer({
                 />
             );
         case "image":
-            return <ImageLayer layer={layer} />;
+            return <ImageLayer layer={layer} onUpdate={onUpdate} />;
         case "shape":
             return <ShapeLayer layer={layer} />;
         default:

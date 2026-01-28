@@ -11,4 +11,7 @@ export * from "./product-research/real";
 export * from "./copy/interface";
 export * from "./copy/mock";
 export * from "./copy/real";
-    
+export * from "./visual/interface";
+export * from "./visual/mock";
+export * from "./visual/real";
+export * from "./visual/prompts";
