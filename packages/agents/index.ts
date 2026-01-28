@@ -7,4 +7,8 @@ export * from "./designer/mock";
 export * from "./designer/real";
 export * from "./product-research/interface";
 export * from "./product-research/mock";
-export * from "./product-research/real";        
+export * from "./product-research/real";
+export * from "./copy/interface";
+export * from "./copy/mock";
+export * from "./copy/real";
+    

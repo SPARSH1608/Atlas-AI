@@ -50,6 +50,38 @@ export function TextLayer({
             suppressContentEditableWarning
             onBlur={handleBlur}
         >
+            <button
+                style={{
+                    position: "absolute",
+                    top: -24,
+                    right: 0,
+                    fontSize: 10,
+                }}
+                onClick={async () => {
+                    const res = await fetch("/api/copy/rewrite", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            text: content.text,
+                            role: layer.role,
+                            brandDNA: window.__BRAND_DNA__, // temp
+                        }),
+                    });
+
+                    const data = await res.json();
+
+                    onUpdate(layer.id, {
+                        content: {
+                            ...content,
+                            text: data.rewritten_text,
+                        },
+                    });
+                }}
+            >
+                Rewrite
+            </button>
+
+
             {content.text}
         </div>
     );
