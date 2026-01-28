@@ -15,7 +15,7 @@ export default async function CanvasPage() {
 
     return (
         <div style={{ padding: 40 }}>
-            <CanvasRoot canvasState={data.canvasState} />
+            <CanvasRoot canvasState={data.canvasState} brandDNA={data.brandDNA} />
         </div>
     );
 }

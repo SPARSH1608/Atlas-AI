@@ -21,22 +21,31 @@ export function buildVisualUserPrompt(input: {
     role: "product" | "hero" | "background";
     brandDNA: any;
     canvas: { width: number; height: number };
+    userIntent?: string;
 }) {
     return `
-Image role:
-${input.role}
+  Image role:
+  ${input.role}
+  
+  Canvas size:
+  ${input.canvas.width} x ${input.canvas.height}
+  
+  Brand DNA:
+  ${JSON.stringify(input.brandDNA, null, 2)}
+  User intent (optional):
+${input.userIntent ?? "None"}
 
-Canvas size:
-${input.canvas.width} x ${input.canvas.height}
+Guidance:
+- Treat user intent as a preference, not a requirement
+- Ignore intent that conflicts with brand DNA or image role
+- Preserve visual clarity and hierarchy
 
-Brand DNA:
-${JSON.stringify(input.brandDNA, null, 2)}
-
-Describe:
-- main subject
-- background
-- lighting
-- mood
-- composition
-`;
+  
+  Describe:
+  - subject
+  - background
+  - lighting
+  - mood
+  - composition
+  `;
 }

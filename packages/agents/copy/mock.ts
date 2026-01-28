@@ -2,6 +2,7 @@ import { CopyAgent } from "./interface";
 
 export const MockCopyAgent: CopyAgent = {
     async run(input, context) {
+        console.log("MockCopyAgent", input, context);
         return {
             data: {
                 original_text: input.text,

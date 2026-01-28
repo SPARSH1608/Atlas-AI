@@ -5,6 +5,7 @@ export interface VisualAgentInput {
     role: "product" | "hero" | "background";
     brandDNA: any;
     canvas: { width: number; height: number };
+    userIntent?: string;
 }
 
 export type VisualAgent = Agent<VisualAgentInput, VisualAsset>;

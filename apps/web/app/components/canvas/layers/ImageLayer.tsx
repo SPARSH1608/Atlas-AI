@@ -1,5 +1,6 @@
 "use client";
 import { CanvasLayer } from "@repo/schemas";
+import { useState } from "react";
 
 export function ImageLayer({
     layer,
@@ -11,7 +12,7 @@ export function ImageLayer({
     if (layer.type !== "image") return null;
 
     const { position, content, style } = layer;
-
+    const [intent, setIntent] = useState<string>("");
     async function generate() {
         const res = await fetch("/api/visual/generate", {
             method: "POST",
@@ -20,6 +21,7 @@ export function ImageLayer({
                 role: layer.role === "product" ? "product" : "hero",
                 brandDNA: (window as any).__BRAND_DNA__,
                 canvas: { width: 1080, height: 1080 },
+                userIntent: intent,
             }),
         });
 
@@ -49,6 +51,12 @@ export function ImageLayer({
                 src={`/placeholder.png`}
                 alt={content.alt_text}
                 style={{ width: "100%", height: "100%", objectFit: style.object_fit }}
+            />
+            <textarea
+                placeholder="Optional: e.g. moody lighting, minimalist background"
+                value={intent}
+                onChange={(e) => setIntent(e.target.value)}
+                style={{ fontSize: 10, width: "100%" }}
             />
             <button
                 onClick={generate}

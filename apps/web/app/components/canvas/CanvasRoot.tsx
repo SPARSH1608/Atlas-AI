@@ -1,16 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CanvasState, CanvasLayer } from "@repo/schemas";
 import { LayerRenderer } from "./LayerRenderer";
 
 export function CanvasRoot({
     canvasState: initialState,
+    brandDNA,
 }: {
     canvasState: CanvasState;
+    brandDNA: any;
 }) {
     const [canvasState, setCanvasState] =
         useState<CanvasState>(initialState);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            window.__BRAND_DNA__ = brandDNA;
+        }
+    }, [brandDNA]);
 
     function updateLayer(layerId: string, patch: Partial<CanvasLayer>) {
         setCanvasState((prev) => ({
