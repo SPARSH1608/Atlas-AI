@@ -136,6 +136,8 @@ export const CanvasLayerSchema = z.discriminatedUnion("type", [
     GroupLayerSchema,
 ]);
 
+export type CanvasLayer = z.infer<typeof CanvasLayerSchema>;
+
 export const CanvasSchema = z.object({
     id: z.string(),
     platform: z.enum(["instagram", "facebook", "banner", "poster"]),
