@@ -10,6 +10,13 @@ export function BackgroundLayer({ layer }: { layer: CanvasLayer }) {
             layer.content.background_type === "solid"
                 ? layer.content.colors?.[0]
                 : undefined,
+        backgroundImage:
+            layer.content.background_type === "image"
+                ? `url('${layer.content.url ??
+                "https://placehold.co/1080x1080/eeeeee/000000?text=Background+Image"
+                }')`
+                : undefined,
+        backgroundSize: "cover",
         zIndex: layer.z_index,
     };
 

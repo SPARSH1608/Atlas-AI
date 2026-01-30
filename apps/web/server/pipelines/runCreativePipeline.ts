@@ -1,7 +1,7 @@
 import { CreativePipelineInput, CreativePipelineResult } from "../types/creative";
 
 import {
-    getBrandIntelligenceAgent, getDesignerAgent, getProductResearchAgent,
+    getBrandIntelligenceAgent, getDesignerAgent, getProductResearchAgent, getDesignFinalizerAgent,
 } from "../agents/registry";
 import { AgentContext } from "@repo/agents";
 import { mapBlueprintToCanvas } from "../mappers/blueprintToCanvas";
@@ -11,8 +11,6 @@ export async function runCreativePipeline(
     const context: AgentContext = {
         requestId: crypto.randomUUID(),
     };
-
-    // Product Research
     const productResearchResult =
         await getProductResearchAgent().run(
             {
@@ -24,7 +22,6 @@ export async function runCreativePipeline(
             context
         );
 
-    // Brand Intelligence
     const brandIntelligenceResult =
         await getBrandIntelligenceAgent().run(
             {
@@ -33,22 +30,46 @@ export async function runCreativePipeline(
             context
         );
 
-    // Designer
     const designerResult =
         await getDesignerAgent().run(
             {
-                brandDNA: brandIntelligenceResult.data,
+                brand: brandIntelligenceResult.data,
+                product: productResearchResult.data,
                 platform: input.platform,
             },
             context
         );
 
-    const canvasState = mapBlueprintToCanvas(designerResult.data)
+    // 4. Design Finalizer (Decide)
+    const finalizerInput = {
+        product: productResearchResult.data,
+        brand: brandIntelligenceResult.data,
+        blueprint: designerResult.data,
+    };
+
+    const agents = {
+        product: getProductResearchAgent(),
+        brand: getBrandIntelligenceAgent(),
+        designer: getDesignerAgent(),
+        designFinalizer: getDesignFinalizerAgent(),
+    };
+
+    console.log("Running design finalizer...");
+    const manifestRes = await getDesignFinalizerAgent().run(finalizerInput, {
+        requestId: context.requestId,
+    });
+
+    // 5. Map to Canvas (Render)
+    const canvasState = await mapBlueprintToCanvas(
+        designerResult.data,
+        manifestRes.data // Pass the manifest!
+    );
 
     return {
         productFacts: productResearchResult.data,
         brandDNA: brandIntelligenceResult.data,
         designBlueprint: designerResult.data,
-        canvasState: canvasState,
+        canvasState,
+        designManifest: manifestRes.data,
     };
 }

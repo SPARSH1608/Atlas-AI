@@ -8,8 +8,9 @@ export async function POST(req: NextRequest) {
     const result = await agent.run(
         {
             role: body.role,
-            brandDNA: body.brandDNA,
+            // brandDNA: body.brandDNA,
             canvas: body.canvas,
+            userIntent: body.userIntent,
         },
         { requestId: crypto.randomUUID() }
     );

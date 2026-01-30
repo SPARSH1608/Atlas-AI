@@ -40,6 +40,8 @@ const BaseLayerSchema = z.object({
             "designer_agent",
             "copy_agent",
             "visual_agent",
+            "design_composition_agent",
+            "design_finalizer_agent",
             "user",
         ]),
         source_agent: z.string(),
@@ -55,6 +57,8 @@ const BackgroundLayerSchema = BaseLayerSchema.extend({
         background_type: z.enum(["solid", "gradient", "image"]),
         colors: z.array(z.string()).optional(),
         asset_id: z.string().optional(),
+        url: z.string().optional(),
+        alt_text: z.string().optional(),
     }),
 
     style: z.object({
@@ -72,6 +76,7 @@ const TextLayerSchema = BaseLayerSchema.extend({
     }),
 
     style: z.object({
+        font_family: z.string().optional(),
         font_category: z.enum(["sans-serif", "serif", "display"]),
         font_weight: z.enum(["light", "regular", "bold"]),
         font_size: z.number(),
@@ -91,6 +96,7 @@ const ImageLayerSchema = BaseLayerSchema.extend({
         asset_id: z.string(),
         source: z.enum(["ai_generated", "user_upload"]),
         alt_text: z.string(),
+        url: z.string().optional(),
     }),
 
     style: z.object({

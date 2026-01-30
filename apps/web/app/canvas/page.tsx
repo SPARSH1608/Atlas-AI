@@ -1,21 +1,31 @@
+"use client";
+import { useEffect, useState } from "react";
 import { CanvasRoot } from "../components/canvas/CanvasRoot";
+import { useSearchParams } from "next/navigation";
 
-export default async function CanvasPage() {
-    const res = await fetch("http://localhost:3000/api/creative", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            productText: "Premium brunch restaurant",
-            platform: "poster",
-        }),
-        cache: "no-store",
-    });
+export default function CanvasPage() {
+    const searchParams = useSearchParams();
+    const readonly = searchParams.get("readonly") === "true";
+    const [canvasState, setCanvasState] = useState(null);
+    const [brandDNA, setBrandDNA] = useState(null);
 
-    const data = await res.json();
+    useEffect(() => {
+        const storedCanvasState = localStorage.getItem("ad_canvas_state");
+        const storedBrandDNA = localStorage.getItem("ad_brand_dna");
+
+        if (storedCanvasState) {
+            setCanvasState(JSON.parse(storedCanvasState));
+        }
+        if (storedBrandDNA) {
+            setBrandDNA(JSON.parse(storedBrandDNA));
+        }
+    }, []);
+
+    if (!canvasState) return <div>Loading canvas...</div>;
 
     return (
         <div style={{ padding: 40 }}>
-            <CanvasRoot canvasState={data.canvasState} brandDNA={data.brandDNA} />
+            <CanvasRoot canvasState={canvasState} brandDNA={brandDNA} readonly={readonly} />
         </div>
     );
 }

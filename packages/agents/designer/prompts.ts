@@ -12,15 +12,23 @@ Focus on structure and intent.
 Return structured data only.
 `;
 
-export function buildDesignerUserPrompt(input: {
-    brandDNA: any;
+export function buildDesignerPrompt(input: {
+    product: any;
+    brand: any;
     platform: string;
+    designPreferences?: string;
 }) {
     return `
-Brand DNA:
-${JSON.stringify(input.brandDNA, null, 2)}
-
-Target platform:
-${input.platform}
-`;
+  Product:
+  ${JSON.stringify(input.product, null, 2)}
+  
+  Brand:
+  ${JSON.stringify(input.brand, null, 2)}
+  
+  ${input.designPreferences ?? ""}
+  
+  Design an ad layout that fits the product and brand.
+  Use preferences as guidance, not strict rules.
+  Return a DesignBlueprint only.
+  `;
 }

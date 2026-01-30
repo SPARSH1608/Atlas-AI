@@ -6,9 +6,11 @@ import { useState } from "react";
 export function TextLayer({
     layer,
     onUpdate,
+    readonly,
 }: {
     layer: CanvasLayer;
     onUpdate: (id: string, patch: Partial<CanvasLayer>) => void;
+    readonly?: boolean;
 }) {
     if (layer.type !== "text") return null;
 
@@ -33,6 +35,7 @@ export function TextLayer({
         top: `${position.y * 100}%`,
         width: `${position.width * 100}%`,
         height: `${position.height * 100}%`,
+        fontFamily: style.font_family,
         fontSize: style.font_size,
         fontWeight: style.font_weight,
         color: style.color,
@@ -47,47 +50,51 @@ export function TextLayer({
     return (
         <div
             style={css}
-            contentEditable={constraints.editable}
+            contentEditable={constraints.editable && !readonly}
             suppressContentEditableWarning
             onBlur={handleBlur}
         >
-            <button
-                style={{
-                    position: "absolute",
-                    top: -24,
-                    right: 0,
-                    fontSize: 10,
-                }}
-                onClick={async () => {
-                    const res = await fetch("/api/copy/rewrite", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            text: content.text,
-                            role: layer.role,
-                            brandDNA: window.__BRAND_DNA__,
-                            userIntent: intent,
-                        }),
-                    });
+            {!readonly && (
+                <>
+                    <button
+                        style={{
+                            position: "absolute",
+                            top: -24,
+                            right: 0,
+                            fontSize: 10,
+                        }}
+                        onClick={async () => {
+                            const res = await fetch("/api/copy/rewrite", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    text: content.text,
+                                    role: layer.role,
+                                    brandDNA: (window as any).__BRAND_DNA__,
+                                    userIntent: intent,
+                                }),
+                            });
 
-                    const data = await res.json();
+                            const data = await res.json();
 
-                    onUpdate(layer.id, {
-                        content: {
-                            ...content,
-                            text: data.rewritten_text,
-                        },
-                    });
-                }}
-            >
-                Rewrite
-            </button>
-            <input
-                placeholder="Optional: e.g. more confident, shorter"
-                value={intent}
-                onChange={(e) => setIntent(e.target.value)}
-                style={{ fontSize: 10, width: "100%" }}
-            />
+                            onUpdate(layer.id, {
+                                content: {
+                                    ...content,
+                                    text: data.rewritten_text,
+                                },
+                            });
+                        }}
+                    >
+                        Rewrite
+                    </button>
+                    <input
+                        placeholder="Optional: e.g. more confident, shorter"
+                        value={intent}
+                        onChange={(e) => setIntent(e.target.value)}
+                        style={{ fontSize: 10, width: "100%" }}
+                    />
+                </>
+            )}
 
             {content.text}
         </div>

@@ -8,34 +8,36 @@ export const MockDesignerAgent: DesignerAgent = {
                 canvas: {
                     platform,
                     aspect_ratio: "1:1",
+                    mood: "modern",
                 },
-                layout_strategy: {
-                    visual_hierarchy: [
-                        "product_visual",
-                        "headline",
-                        "supporting_text",
-                    ],
-                    composition_style: "centered",
-                    white_space_density: "high",
-                },
+                layout_strategy: "centered_hierarchy",
+                rationale: "Centered layout emphasizes the product with clear visual hierarchy.",
                 components: [
                     {
                         id: "background",
                         type: "background",
-                        priority: "supporting",
+                        role: "base",
+                        importance: 0.3,
+                        constraints: null,
                     },
                     {
                         id: "headline",
                         type: "text",
-                        priority: "primary",
+                        role: "headline",
+                        importance: 1,
                         constraints: {
                             max_lines: 2,
+                            max_chars: null,
+                            alignment: null,
+                            emphasis: null,
                         },
                     },
                     {
                         id: "product_visual",
                         type: "image",
-                        priority: "primary",
+                        role: "product",
+                        importance: 1,
+                        constraints: null,
                     },
                 ],
             },

@@ -1,135 +1,54 @@
-# Turborepo starter
+# AI Ad Generator
 
-This Turborepo starter is maintained by the Turborepo core team.
+An autonomous multi-agent system that autonomously generates high-quality, on-brand advertising creatives from simple product descriptions.
 
-## Using this example
+## 🤖 Agent Architecture
 
-Run the following command:
+The system is composed of specialized AI agents, each simulating a specific role in a creative agency:
 
-```sh
-npx create-turbo@latest
-```
+| Agent | Role | Function |
+|-------|------|----------|
+| **Product Research Agent** | *The Strategist* | Analyzes raw input (text/images) to understand the product's core value, category, and key selling points. |
+| **Brand Intelligence Agent** | *The Brand Manager* | Determines the brand personality, archetype, target audience, and tone of voice based on the product data. |
+| **Design Composition Agent** | *The Researcher* | (Optional) Analyzes reference images provided by the user to extract stylistic preferences (mood, color palettes, spacing). |
+| **Designer Agent** | *The Creative Director* | Synthesizes research and brand data to create a **Design Blueprint**. This acts as a wireframe, defining the layout strategy and component positions. |
+| **Design Finalizer Agent** | *The Art Director* | Takes the abstract blueprint and commits to **Final Design Decisions** (Manifest). Chooses exact hex codes, specific fonts, final copy, and concrete image concepts. |
+| **Copy Agent** | *The Copywriter* | Writes and refines text content (headlines, body, CTAs) to match the brand's voice and the specific context of the ad layer. |
+| **Visual Agent** | *The Illustrator/Photographer* | Generates high-fidelity visual assets (product shots, backgrounds) based on the specific concepts defined by the Finalizer. |
 
-## What's inside?
+## 🔄 The Creative Pipeline
 
-This Turborepo includes the following packages/apps:
+The agents collaborate in a sequential pipeline to transform a concept into a final render:
 
-### Apps and Packages
+1.  **Input Processing**: User provides a product description and optional reference images.
+2.  **Research Phase**:
+    *   `ProductResearchAgent` extracts structured product facts.
+    *   `BrandIntelligenceAgent` derives a brand identity.
+3.  **Design Phase**:
+    *   `DesignerAgent` creates a `DesignBlueprint` (abstract layout).
+    *   `DesignFinalizerAgent` reviews the blueprint and produces a `DesignManifest` (concrete style guide), ensuring all decisions are finalized before rendering.
+4.  **Assembler Phase**:
+    *   The system maps the *Blueprint* and *Manifest* into a `CanvasState` (a JSON representation of the editable ad).
+5.  **Execution Phase** (Parallel):
+    *   `CopyAgent` populates text layers with finalized copy.
+    *   `VisualAgent` generates image assets for background and product layers, strictly adhering to the concepts in the *Manifest*.
+6.  **Rendering**: The final `CanvasState` is rendered on the frontend, allowing for real-time editing and export.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## 🛠️ Tech Stack
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+*   **Framework**: Next.js (React)
+*   **Language**: TypeScript
+*   **AI Orchestration**: Custom Agent Framework (relying on OpenAI models)
+*   **Validation**: Zod Schemas (ensuring strict structured outputs)
+*   **State Management**: JSON-based Canvas State
 
-### Utilities
+## 🚀 Getting Started
 
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
-
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+1.  Ensure generic web-safe fonts (Arial, Helvetica, etc.) or supported local fonts (Geist) are used.
+2.  Run the development server:
+    ```bash
+    npm run dev
+    # or
+    bun run dev
+    ```
+3.  Access the canvas at `/canvas` or the creative generation API at `/api/creative`.

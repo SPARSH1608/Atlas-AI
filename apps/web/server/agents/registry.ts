@@ -1,12 +1,13 @@
-import { BrandIntelligenceAgent, ProductResearchAgent, DesignerAgent } from "@repo/agents";
+import { BrandIntelligenceAgent, ProductResearchAgent, DesignerAgent, MockDesignCompositionAgent, DesignCompositionAgentImpl, DesignCompositionAgent, DesignFinalizerAgent } from "@repo/agents";
 
 // mocks
-import { MockDesignerAgent, MockBrandIntelligenceAgent, MockProductResearchAgent } from "@repo/agents";
+import { MockDesignerAgent, MockBrandIntelligenceAgent, MockProductResearchAgent, MockDesignFinalizerAgent } from "@repo/agents";
 
 // real
 import { DesignerAgentImpl, BrandIntelligenceAgentImpl, ProductResearchAgentImpl } from "@repo/agents"
 import { CopyAgentImpl, MockCopyAgent, CopyAgent } from "@repo/agents"
 import { VisualAgentImpl, MockVisualAgent, VisualAgent } from "@repo/agents"
+import { DesignFinalizerAgentImpl } from "@repo/agents"
 const USE_MOCKS = process.env.USE_MOCK_AGENTS === "true";
 console.log("Using mock agents:", USE_MOCKS);
 
@@ -37,4 +38,16 @@ export function getDesignerAgent(): DesignerAgent {
     return USE_MOCKS
         ? MockDesignerAgent
         : DesignerAgentImpl;
+}
+
+export function getDesignFinalizerAgent(): DesignFinalizerAgent {
+    return USE_MOCKS
+        ? MockDesignFinalizerAgent
+        : DesignFinalizerAgentImpl;
+}
+
+export function getDesignCompositionAgent(): DesignCompositionAgent {
+    return USE_MOCKS
+        ? MockDesignCompositionAgent
+        : DesignCompositionAgentImpl;
 }

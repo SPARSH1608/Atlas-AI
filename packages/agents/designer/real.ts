@@ -1,21 +1,17 @@
-
-import { DesignerAgent } from "./interface";
 import { runStructuredLLM } from "@repo/ai/llm";
+import { AgentContext } from "../base/agent";
+import { DesignerAgentInput } from "./interface";
+import { DesignBlueprintSchema } from "@repo/schemas";
 import { MODELS } from "@repo/ai/models";
-import { DesignBlueprintSchema, DesignBlueprint } from "@repo/schemas";
-import {
-    DESIGNER_SYSTEM_PROMPT,
-    buildDesignerUserPrompt,
-} from "./prompts";
+import { buildDesignerPrompt } from "./prompts";
 
-export const DesignerAgentImpl: DesignerAgent = {
-    async run(input, context) {
+export const DesignerAgentImpl = {
+    async run(input: DesignerAgentInput, ctx: AgentContext) {
         const start = Date.now();
-
-        const data = await runStructuredLLM<DesignBlueprint>({
+        const data = await runStructuredLLM({
             model: MODELS.SMART,
-            system: DESIGNER_SYSTEM_PROMPT,
-            user: buildDesignerUserPrompt(input),
+            system: "You are a senior designer.",
+            user: buildDesignerPrompt(input),
             schema: DesignBlueprintSchema,
         });
 

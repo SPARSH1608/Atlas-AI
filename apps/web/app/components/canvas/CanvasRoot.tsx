@@ -7,9 +7,11 @@ import { LayerRenderer } from "./LayerRenderer";
 export function CanvasRoot({
     canvasState: initialState,
     brandDNA,
+    readonly = false,
 }: {
     canvasState: CanvasState;
     brandDNA: any;
+    readonly?: boolean;
 }) {
     const [canvasState, setCanvasState] =
         useState<CanvasState>(initialState);
@@ -48,6 +50,7 @@ export function CanvasRoot({
                         key={layer.id}
                         layer={layer}
                         onUpdate={updateLayer}
+                        readonly={readonly}
                     />
                 ))}
         </div>

@@ -6,6 +6,7 @@ export const VisualAssetSchema = z.object({
     prompt_used: z.string(),
     style_tags: z.array(z.string()),
     aspect_ratio: z.string(),
-});
+    url: z.string().optional(),
+}).strict();
 
 export type VisualAsset = z.infer<typeof VisualAssetSchema>;

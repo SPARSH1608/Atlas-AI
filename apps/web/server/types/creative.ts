@@ -1,4 +1,4 @@
-import { BrandDNA, DesignBlueprint, ProductFacts, CanvasState } from "@repo/schemas";
+import { BrandDNA, DesignBlueprint, ProductFacts, CanvasState, DesignManifest } from "@repo/schemas";
 import { z } from "zod";
 
 export interface CreativePipelineInput {
@@ -14,6 +14,7 @@ export interface CreativePipelineResult {
     brandDNA: BrandDNA;
     designBlueprint: DesignBlueprint;
     canvasState: CanvasState;
+    designManifest: DesignManifest;
 }
 
 export const CreativePipelineInputSchema = z.object({
